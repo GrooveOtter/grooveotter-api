@@ -24,9 +24,7 @@
     "passport-google-oauth": "latest",
     "composable-middleware": "^0.3.0",
     "connect-mongo": "^0.4.1",
-    "node-persist": "0.0.3",
-    "cookie-session": "1.1.0",
-    "mongoose-timestamp": "0.4.0"
+    "node-persist": "0.0.3"
   },
   "devDependencies": {
     "cors": "2.6.0 ",
