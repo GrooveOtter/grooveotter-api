@@ -5,8 +5,13 @@ var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
+
+
+
 var UserSchema = new Schema({
   name: String,
+  totalTime: Number,
+  picture: {data: Buffer, contentType: String},
   email: { type: String, lowercase: true },
   role: {
     type: String,
@@ -16,8 +21,11 @@ var UserSchema = new Schema({
   provider: String,
   salt: String,
   twitter: {},
-  github: {}
+  github: {},
+  posts: [],
+  sessionTracker: Number
 });
+
 
 /**
  * Virtuals

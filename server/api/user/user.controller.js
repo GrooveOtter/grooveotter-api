@@ -4,7 +4,8 @@ var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
-
+var storage = require('node-persist');
+storage.initSync();
 var validationError = function(res, err) {
   return res.json(422, err);
 };
@@ -24,16 +25,33 @@ exports.index = function(req, res) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
-  console.log('************* Created User ********', req.body);
   var newUser = new User(req.body);
   newUser.provider = 'local';
   newUser.role = 'user';
+  // storage.setItem('userId', newUser._id)
   newUser.save(function(err, user) {
+    console.log(user.getItem('userId'))
     if (err) return validationError(res, err);
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
     res.json({ token: token });
   });
 };
+/**
+* Update a user
+*/
+exports.update = function(req, res) {
+  User.findById(req.params.id, function (err, user) {
+    if (err) { return handleError(res, err); }
+    if(!user) { return res.send(404); }
+    // Put the email into the body
+    // var updated = _.merge(User, req.body);
+    updated.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, User);
+    });
+  });
+};
+
 
 /**
  * Get a single user

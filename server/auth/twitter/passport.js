@@ -1,6 +1,7 @@
 exports.setup = function (User, config) {
   var passport = require('passport');
   var TwitterStrategy = require('passport-twitter').Strategy;
+  var storage = require('node-persist');
 
   passport.use(new TwitterStrategy({
     consumerKey: 'o4Vg5Q4D8iZ6RsBssEQf1MYwB',
@@ -8,7 +9,6 @@ exports.setup = function (User, config) {
     callbackURL: 'http://localhost:9000/auth/twitter/callback'
   },
   function(token, tokenSecret, profile, done) {
-    console.log('token is the profile', profile);
     User.findOne({
       'twitter.id_str': profile.id
     }, function(err, user) {
@@ -16,7 +16,6 @@ exports.setup = function (User, config) {
         return done(err);
       }
       if (!user) {
-        console.log('token is the profile', profile);
         user = new User({
           name: profile.displayName,
           username: profile.username,
@@ -25,6 +24,7 @@ exports.setup = function (User, config) {
           twitter: profile._json
         });
         user.save(function(err) {
+          storage.setItem('userId', user._id);
           if (err) return done(err);
           return done(err, user);
         });
