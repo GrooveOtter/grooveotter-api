@@ -6,12 +6,10 @@ var User = require('../user/user.model');
 var storage = require('node-persist');
 // Get list of blockedsites
 exports.index = function(req, res) {
-  var userId = storage.getItem('userId');
-  BlockedSite.find({'blockedSiteId': userId}, function (err, docs){
-    if(err) { return handleError(res, err); }
-    console.log(docs)
-    return res.json(200, docs);
-  });
+  res.json(200,req);
+  // BlockedSite.find().where('taskId',userId).exec(function (err, docs) {
+  //   return res.json(200, docs);
+  // });
 };
 
 // Get a single blocked-site
@@ -25,7 +23,8 @@ exports.show = function(req, res) {
 
 // Creates a new blocked-site in the DB.
 exports.create = function(req, res) {
-  // var userId = storage.getItem('userId');
+  var userId = storage.getItem('userId');
+  req.body.blockedSiteId = userId;
   BlockedSite.create(req.body, function(err, blockedsite) {
     if(err) { return handleError(res, err); }
     return res.json(201, blockedsite);
