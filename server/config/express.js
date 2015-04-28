@@ -29,7 +29,7 @@ module.exports = function(app) {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   app.use(methodOverride());
-  app.use(cookieParser());
+  app.use(cookieParser('foo'));
   app.use(passport.initialize());
   app.use(passport.session())
 
@@ -37,11 +37,9 @@ module.exports = function(app) {
   // Persist sessions with mongoStore
   // We need to enable sessions for passport twitter because its an oauth 1.0 strategy
   app.use(session({
-    secret: 'config.secrets.session',
-    resave: true,
-    rolling: true,
+    secret: 'foo',
     saveUninitialized: true,
-    cookie: { httpOnly: true, maxAge: 2419200000 },
+    cookie: { expires: false, domain: config.cookie.domain },
   }));
 
   if ('production' === env) {
