@@ -6,7 +6,7 @@ var controller = require('./task.controller');
 var router = express.Router();
 
 router.get('/:userId', controller.index);
-router.get('/:id', controller.show);
+router.get('/:userId/:id', controller.show);
 router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);

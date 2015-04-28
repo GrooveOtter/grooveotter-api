@@ -16,7 +16,9 @@ exports.index = function(req, res) {
 
 // Get a single task
 exports.show = function(req, res) {
+  console.log('show is hit');
   Task.findById(req.params.id, function (err, task) {
+    console.log(task)
     if(err) { return handleError(res, err); }
     if(!task) { return res.send(404); }
     return res.json(task);
