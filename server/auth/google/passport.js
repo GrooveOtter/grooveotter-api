@@ -5,7 +5,7 @@ exports.setup = function (User, config) {
   passport.use(new GoogleStrategy({
       clientID: '738343860154-drft4cuo79kvajidtfplnonciujlnc8d.apps.googleusercontent.com',
       clientSecret: 'uOR2TMKe97Sqrg2BeiDTb18_',
-      callbackURL: 'http://localhost:9000/auth/google/callback'
+      callbackURL: 'http://grooveotter-api.herokuapp.com/auth/google/callback'
     },
     function(accessToken, refreshToken, profile, done) {
       User.findOne({

@@ -31,14 +31,17 @@ module.exports = function(app) {
   app.use(methodOverride());
   app.use(cookieParser());
   app.use(passport.initialize());
+  app.use(passport.session())
+
 
   // Persist sessions with mongoStore
   // We need to enable sessions for passport twitter because its an oauth 1.0 strategy
   app.use(session({
-    secret: config.secrets.session,
+    secret: 'config.secrets.session',
     resave: true,
+    rolling: true,
     saveUninitialized: true,
-    store: new mongoStore({ mongoose_connection: mongoose.connection })
+    cookie: { httpOnly: true, maxAge: 2419200000 },
   }));
 
   if ('production' === env) {
@@ -56,4 +59,18 @@ module.exports = function(app) {
     app.use(morgan('dev'));
     app.use(errorHandler()); // Error handler - has to be last
   }
+
+  passport.serializeUser(function (user, done) {
+    console.log('inside serializeUser')
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(function (user, done) {
+    console.log('inside serializeUser')
+    //If using MongoDB, if other you will need JS specific to that schema
+    User.findById(id, function (err, user) {
+        done(err, user);
+    });
+  });
+
 };

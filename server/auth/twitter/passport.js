@@ -1,12 +1,11 @@
 exports.setup = function (User, config) {
   var passport = require('passport');
   var TwitterStrategy = require('passport-twitter').Strategy;
-  var storage = require('node-persist');
 
   passport.use(new TwitterStrategy({
     consumerKey: 'o4Vg5Q4D8iZ6RsBssEQf1MYwB',
     consumerSecret: 'K9EB32wURCbYElXtvpKP8usqrtJ4hoPhrv7fVcK5HrCn11db3w',
-    callbackURL: 'http://localhost:9000/auth/twitter/callback'
+    callbackURL: 'http://grooveotter-api.herokuapp.com//auth/twitter/callback'
   },
   function(token, tokenSecret, profile, done) {
     User.findOne({
@@ -24,7 +23,6 @@ exports.setup = function (User, config) {
           twitter: profile._json
         });
         user.save(function(err) {
-          storage.setItem('userId', user._id);
           if (err) return done(err);
           return done(err, user);
         });
@@ -34,4 +32,5 @@ exports.setup = function (User, config) {
     });
     }
   ));
+
 };

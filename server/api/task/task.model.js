@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 
 var TaskSchema = new Schema({
   name: String,
-  taskId: String,
+  taskUserId: String,
   timeDuration: Number,
   created: String,
   updatedTimeStamp: Number,

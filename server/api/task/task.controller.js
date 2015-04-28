@@ -4,13 +4,11 @@ var _ = require('lodash');
 var Task = require('./task.model');
 var User = require('../user/user.model');
 var mongoose = require('mongoose');
-var storage = require('node-persist');
-storage.initSync();
+
 
 // Get list of tasks
 exports.index = function(req, res) {
-  var userId = storage.getItem('userId');
-  Task.find().where('taskId',userId).exec(function (err, tasks) {
+  Task.find().where('taskUserId',req.params.userId).exec(function (err, tasks) {
     if(err) { return handleError(res, err); }
     return res.json(200, tasks);
   });
@@ -27,8 +25,6 @@ exports.show = function(req, res) {
 
 // Creates a new task in the DB.
 exports.create = function(req, res) {
-  var userId = storage.getItem('userId');
-  req.body.taskId = userId;
   Task.create(req.body, function(err, task) {
     if(err) {
       return handleError(res, err);

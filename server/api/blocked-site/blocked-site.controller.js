@@ -3,28 +3,25 @@
 var _ = require('lodash');
 var BlockedSite = require('./blocked-site.model');
 var User = require('../user/user.model');
-var storage = require('node-persist');
+
 // Get list of blockedsites
 exports.index = function(req, res) {
-  res.json(200,req);
-  // BlockedSite.find().where('taskId',userId).exec(function (err, docs) {
-  //   return res.json(200, docs);
-  // });
+  BlockedSite.find().where('blockedSiteId',req.params.id).exec(function (err, docs) {
+    return res.json(200, docs);
+  });
 };
 
 // Get a single blocked-site
 exports.show = function(req, res) {
-  BlockedSite.findById(req.params.id, function (err, sites) {
-    if(err) { return handleError(res, err); }
-    if(!sites) { return res.send(404); }
-    return res.json(sites);
-  });
+  // BlockedSite.findById(req.params.id, function (err, sites) {
+  //   if(err) { return handleError(res, err); }
+  //   if(!sites) { return res.send(404); }
+  //   return res.json(sites);
+  // });
 };
 
 // Creates a new blocked-site in the DB.
 exports.create = function(req, res) {
-  var userId = storage.getItem('userId');
-  req.body.blockedSiteId = userId;
   BlockedSite.create(req.body, function(err, blockedsite) {
     if(err) { return handleError(res, err); }
     return res.json(201, blockedsite);
