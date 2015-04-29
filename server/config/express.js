@@ -16,6 +16,7 @@ var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
 var session = require('express-session');
+var cookieSession = require('cookie-session');
 var mongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
 
