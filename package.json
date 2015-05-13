@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "main": "server/app.js",
   "dependencies": {
+    "cors": "2.6.0 ",
     "express": "~4.0.0",
     "morgan": "~1.0.0",
     "body-parser": "~1.5.0",
@@ -20,11 +21,15 @@
     "passport": "~0.2.0",
     "passport-local": "~0.1.6",
     "passport-twitter": "latest",
+    "passport-google-oauth": "latest",
     "composable-middleware": "^0.3.0",
     "connect-mongo": "^0.4.1",
-    "node-persist": "0.0.3"
+    "node-persist": "0.0.3",
+    "cookie-session": "1.1.0",
+    "mongoose-timestamp": "0.4.0"
   },
   "devDependencies": {
+    "cors": "2.6.0 ",
     "grunt": "~0.4.4",
     "grunt-autoprefixer": "~0.7.2",
     "grunt-wiredep": "~1.8.0",
@@ -77,7 +82,8 @@
     "karma": "~0.12.9",
     "karma-ng-html2js-preprocessor": "~0.1.0",
     "supertest": "~0.11.0",
-    "should": "~3.3.1"
+    "should": "~3.3.1",
+    "mongoose-timestamp": "0.4.0"
   },
   "engines": {
     "node": ">=0.10.0"

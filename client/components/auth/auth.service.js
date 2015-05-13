@@ -31,6 +31,7 @@ angular.module('goServerApp')
           return cb();
         }).
         error(function(err) {
+          console.log('noUser');
           this.logout();
           deferred.reject(err);
           return cb(err);

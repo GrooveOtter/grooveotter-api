@@ -1,15 +1,16 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    timestamp = require('mongoose-timestamp');
 
 var TaskSchema = new Schema({
-  name: String,
-  taskUserId: String,
+  title: String,
+  userId: String,
   timeDuration: Number,
-  created: String,
-  updatedTimeStamp: Number,
-  Complete: Boolean
+  completed: Boolean
 });
+
+TaskSchema.plugin(timestamp);
 
 module.exports = mongoose.model('Task', TaskSchema);

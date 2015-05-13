@@ -5,6 +5,7 @@
 'use strict';
 
 var express = require('express');
+var cors = require('cors');
 var favicon = require('serve-favicon');
 var morgan = require('morgan');
 var compression = require('compression');
@@ -30,18 +31,19 @@ module.exports = function(app) {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   app.use(methodOverride());
-  app.use(cookieParser('foo'));
+  app.use(cors());
+  app.use(cookieParser());
+  app.use(session({
+    secret: 'foo',
+    saveUninitialized: true,
+    cookie: { expires: false, httpOnly: false},
+  }));
   app.use(passport.initialize());
   app.use(passport.session())
 
 
   // Persist sessions with mongoStore
   // We need to enable sessions for passport twitter because its an oauth 1.0 strategy
-  app.use(session({
-    secret: 'foo',
-    saveUninitialized: true,
-    cookie: { expires: false, domain: config.cookie.domain },
-  }));
 
   if ('production' === env) {
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
@@ -62,14 +64,6 @@ module.exports = function(app) {
   passport.serializeUser(function (user, done) {
     console.log('inside serializeUser')
     done(null, user.id);
-  });
-
-  passport.deserializeUser(function (user, done) {
-    console.log('inside serializeUser')
-    //If using MongoDB, if other you will need JS specific to that schema
-    User.findById(id, function (err, user) {
-        done(err, user);
-    });
   });
 
 };

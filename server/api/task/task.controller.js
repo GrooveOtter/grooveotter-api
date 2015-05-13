@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 
 // Get list of tasks
 exports.index = function(req, res) {
-  Task.find().where('taskUserId',req.params.userId).exec(function (err, tasks) {
+  Task.find().where('userId',req.params.userId).exec(function (err, tasks) {
     if(err) { return handleError(res, err); }
     return res.json(200, tasks);
   });
@@ -25,6 +25,7 @@ exports.show = function(req, res) {
 
 // Creates a new task in the DB.
 exports.create = function(req, res) {
+  req.body.userId = req.params.userId;
   Task.create(req.body, function(err, task) {
     if(err) {
       return handleError(res, err);
