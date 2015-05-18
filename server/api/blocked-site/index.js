@@ -5,9 +5,9 @@ var controller = require('./blocked-site.controller');
 
 var router = express.Router();
 
-router.get('/:id', controller.index);
+router.get('/:userId/blocked-sites', controller.index);
 // router.get('/:id', controller.show);
-router.post('/', controller.create);
+router.post('/:userId/blocked-sites', controller.create);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);

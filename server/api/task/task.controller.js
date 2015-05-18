@@ -8,7 +8,8 @@ var mongoose = require('mongoose');
 
 // Get list of tasks
 exports.index = function(req, res) {
-  Task.find().where('userId',req.params.userId).exec(function (err, tasks) {
+  Task.find({userId: req.params.userId}).find(function (err, tasks) {
+    console.log('tasks', tasks);
     if(err) { return logErrors(err,res); }
     return res.json(200, tasks);
   });

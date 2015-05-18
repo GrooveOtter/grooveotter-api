@@ -6,7 +6,7 @@ var User = require('../user/user.model');
 
 // Get list of blockedsites
 exports.index = function(req, res) {
-  BlockedSite.find().where('blockedSiteId',req.params.id).exec(function (err, docs) {
+  BlockedSite.find({blockedSiteId: req.params.id}).find(function (err, docs) {
     return res.json(200, docs);
   });
 };
