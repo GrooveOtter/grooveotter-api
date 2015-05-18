@@ -13,6 +13,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var errorHandler = require('errorhandler');
+var cors = require('cors');
 var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
@@ -28,6 +29,7 @@ module.exports = function(app) {
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
   app.use(compression());
+
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   app.use(methodOverride());
@@ -39,7 +41,7 @@ module.exports = function(app) {
     cookie: { expires: false, httpOnly: false},
   }));
   app.use(passport.initialize());
-  app.use(passport.session())
+  app.use(passport.session());
 
 
   // Persist sessions with mongoStore

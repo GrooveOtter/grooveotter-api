@@ -10,7 +10,7 @@ module.exports = function(app) {
 
   // Insert routes below
   app.use('/api/blocked-sites', require('./api/blocked-site'));
-  app.use('/api/tasks', require('./api/task'));
+  app.use('/api/users', require('./api/task'));
   app.use('/api/users', require('./api/user'));
 
   app.use('/auth', require('./auth'));
