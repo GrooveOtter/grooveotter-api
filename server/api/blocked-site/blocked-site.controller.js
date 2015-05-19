@@ -6,7 +6,8 @@ var User = require('../user/user.model');
 
 // Get list of blockedsites
 exports.index = function(req, res) {
-  BlockedSite.find({blockedSiteId: req.params.id}).find(function (err, docs) {
+  BlockedSite.find().where('blockedSiteId',req.params.userId).exec(function (err, docs) {
+    console.log("docs", docs);
     return res.json(200, docs);
   });
 };
@@ -22,6 +23,7 @@ exports.show = function(req, res) {
 
 // Creates a new blocked-site in the DB.
 exports.create = function(req, res) {
+  req.body.blockedSiteId = req.params.userId;
   BlockedSite.create(req.body, function(err, blockedsite) {
     if(err) { return handleError(res, err); }
     return res.json(201, blockedsite);
