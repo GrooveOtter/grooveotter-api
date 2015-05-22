@@ -3,8 +3,8 @@ exports.setup = function (User, config) {
   var TwitterStrategy = require('passport-twitter').Strategy;
 
   passport.use(new TwitterStrategy({
-    consumerKey: 'o4Vg5Q4D8iZ6RsBssEQf1MYwB',
-    consumerSecret: 'K9EB32wURCbYElXtvpKP8usqrtJ4hoPhrv7fVcK5HrCn11db3w',
+    consumerKey: process.env.TWITTER_ID,
+    consumerSecret: process.env.TWITTER_SECRET,
     callbackURL: 'http://grooveotter-api.herokuapp.com/auth/twitter/callback'
   },
   function(token, tokenSecret, profile, done) {

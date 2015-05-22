@@ -8,6 +8,7 @@ angular.module('goServerApp')
       $scope.awesomeThings = awesomeThings;
     });
 
+
     $scope.addThing = function() {
       if($scope.newThing === '') {
         return;
