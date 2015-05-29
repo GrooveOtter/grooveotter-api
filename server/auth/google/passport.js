@@ -3,8 +3,8 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 exports.setup = function (User, config) {
   passport.use(new GoogleStrategy({
-      clientID: process.env.GOOGLE_CONSUMER_KEY,
-      clientSecret: process.env.GOOGLE_CONSUMER_SECRET,
+      clientID: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
       callbackURL: 'http://grooveotter-api.herokuapp.com/auth/google/callback'
     },
     function(accessToken, refreshToken, profile, done) {

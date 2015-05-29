@@ -57,6 +57,7 @@ exports.update = function(req, res) {
 exports.show = function (req, res, next) {
   var userId = req.params.id;
 
+  console.log('inside show method');
   User.findById(userId, function (err, user) {
     if (err) return next(err);
     if (!user) return res.send(401);
