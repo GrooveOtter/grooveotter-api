@@ -38,7 +38,7 @@ module.exports = function(app) {
   app.use(session({
     secret: 'foo',
     saveUninitialized: true,
-    cookie: { expires: false, httpOnly: false},
+    cookie: { expires: false, httpOnly: true},
   }));
   app.use(passport.initialize());
   app.use(passport.session());

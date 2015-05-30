@@ -26,13 +26,15 @@ function isAuthenticated() {
     })
     // Attach user to request
     .use(function(req, res, next) {
-      User.findById(req.user._id, function (err, user) {
-        if (err) return next(err);
-        if (!user) return res.send(401);
+      res.json(req.user);
 
-        req.user = user;
-        next();
-      });
+      // User.findById(req.user._id, function (err, user) {
+      //   if (err) return next(err);
+      //   if (!user) return res.send(401);
+
+      //   req.user = user;
+      //   next();
+      // });
     });
 }
 
@@ -69,6 +71,8 @@ function setTokenCookie(req, res) {
   var token = signToken(req.user._id, req.user.role);
   res.cookie('token', JSON.stringify(token));
   res.cookie('ID', JSON.stringify(req.user._id));
+  req.session.token = token;
+  req.session.userId = req.user._id;
   res.redirect('/');
 }
 
