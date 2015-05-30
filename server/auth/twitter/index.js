@@ -8,13 +8,11 @@ var router = express.Router();
 
 router
   .get('/', passport.authenticate('twitter', {
-    failureRedirect: '/signup',
-    session: false
+    failureRedirect: '/signup'
   }))
 
   .get('/callback', passport.authenticate('twitter', {
-    failureRedirect: '/signup',
-    session: false
-  }), auth.setTokenCookie);
+    failureRedirect: '/signup'
+  }), auth.setOAuthToken);
 
 module.exports = router;

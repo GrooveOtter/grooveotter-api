@@ -4,9 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
-
-
-
+var passport = require('passport');
 
 var UserSchema = new Schema({
   name: String,
@@ -152,4 +150,15 @@ UserSchema.methods = {
   }
 };
 
-module.exports = mongoose.model('User', UserSchema);
+var User = module.exports = mongoose.model('User', UserSchema);
+
+
+passport.serializeUser(function(user, done) {
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(userId, done) {
+  User.findById(userId, function(err, user) {
+    done(err, user);
+  });
+});

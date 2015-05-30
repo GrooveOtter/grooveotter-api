@@ -38,10 +38,11 @@ module.exports = function(app) {
   app.use(session({
     secret: 'foo',
     saveUninitialized: true,
-    cookie: { expires: false, httpOnly: true},
+    cookie: { expires: false, httpOnly: true, secure: true},
   }));
   app.use(passport.initialize());
   app.use(passport.session());
+
 
 
   // Persist sessions with mongoStore

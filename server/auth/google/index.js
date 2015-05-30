@@ -9,13 +9,11 @@ var router = express.Router();
 router
   .get('/', passport.authenticate('google', {
     failureRedirect: '/signup',
-    scope: 'https://www.googleapis.com/auth/userinfo.profile',
-    session: false
+    scope: 'https://www.googleapis.com/auth/userinfo.profile'
   }))
 
-  .get('/callback', passport.authenticate('google', {
-    failureRedirect: '/signup',
-    session: false
-  }), auth.setTokenCookie);
+  .get('/callback', auth.setOAuthToken, passport.authenticate('google', {
+    failureRedirect: '/signup'
+  }));
 
 module.exports = router;

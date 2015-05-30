@@ -10,7 +10,7 @@ var auth = require('./auth/auth.service');
 module.exports = function(app) {
   app.use('/auth', require('./auth'));
 
-  app.use(auth.isAuthenticated());
+  app.use(auth.isAuthenticated);
 
   // Insert routes below
   app.use('/api/users', require('./api/blocked-site'));
