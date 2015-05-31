@@ -14,6 +14,8 @@ var KnexStore = require('connect-session-knex')(session);
 
 var app = module.exports = express();
 
+app.set('trust proxy', 1);
+
 // heroku already logs every incoming request
 // we don't want log messages during tests
 if (process.env.NODE_ENV === 'development') {
@@ -26,7 +28,7 @@ app.use(session({
     store: new KnexStore({knex: bookshelf.knex, tablename: 'user_sessions'}),
     secret: process.env.SECRET,
     cookie: {
-        // secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     },
