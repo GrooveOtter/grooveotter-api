@@ -12,7 +12,8 @@ router
   }))
 
   .get('/callback', passport.authenticate('twitter', {
+    successRedirect: '/',
     failureRedirect: '/signup'
-  }), auth.setOAuthToken);
+  }));
 
 module.exports = router;

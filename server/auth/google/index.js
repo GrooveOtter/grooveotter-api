@@ -12,7 +12,8 @@ router
     scope: 'https://www.googleapis.com/auth/userinfo.profile'
   }))
 
-  .get('/callback', auth.setOAuthToken, passport.authenticate('google', {
+  .get('/callback', passport.authenticate('google', {
+    successRedirect: '/',
     failureRedirect: '/signup'
   }));
 

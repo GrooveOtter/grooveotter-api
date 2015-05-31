@@ -42,19 +42,6 @@ function signToken(id) {
   return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*5 });
 }
 
-/**
- * Set token cookie directly for oAuth strategies
- */
-var setOAuthToken = compose()
-  .use(validateJwt)
-  .use(function(req, res) {
-    if (!req.user) return res.json(404, { message: 'Something went wrong, please try again.'});
-    var token = signToken(req.user._id, req.user.role);
-    req.session.token = token;
-    res.redirect('/');
-  });
-
 exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
 exports.signToken = signToken;
-exports.setOAuthToken = setOAuthToken;
