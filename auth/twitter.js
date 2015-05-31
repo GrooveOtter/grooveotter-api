@@ -19,7 +19,7 @@ twitter.get('/callback', passport.authenticate('twitter'), function(req, res) {
     if (req.session.callback) {
         res.redirect(req.session.callback);
     } else {
-        res.sendStatus(204);
+        res.redirect('/');
     }
 });
 
