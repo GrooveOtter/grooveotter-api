@@ -5,7 +5,7 @@ exports.setup = function (User, config) {
   passport.use(new TwitterStrategy({
     consumerKey: process.env.TWITTER_ID,
     consumerSecret: process.env.TWITTER_SECRET,
-    callbackURL: 'http://grooveotter-api.herokuapp.com/auth/twitter/callback'
+    callbackURL: 'https://grooveotter-api.herokuapp.com/auth/twitter/callback'
   },
   function(token, tokenSecret, profile, done) {
     User.findOne({
