@@ -21,10 +21,10 @@ var session = require('express-session');
 var cookieSession = require('cookie-session');
 var mongoStore = require('connect-mongo')(session);
 var mongoose = require('mongoose');
-
 module.exports = function(app) {
   var env = app.get('env');
 
+  app.set(‘trust proxy’, 1);
   app.set('views', config.root + '/server/views');
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
