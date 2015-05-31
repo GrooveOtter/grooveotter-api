@@ -31,7 +31,7 @@ app.use(session({
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     },
     saveUninitialized: false,
-    resave: false
+    resave: true
 }));
 
 app.use(passport.initialize());
