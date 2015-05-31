@@ -16,8 +16,6 @@ twitter.get('/', function(req, res, next) {
 }, passport.authenticate('twitter'));
 
 twitter.get('/callback', passport.authenticate('twitter'), function(req, res) {
-    console.log('what');
-
     if (req.session.callback) {
         res.redirect(req.session.callback);
     } else {

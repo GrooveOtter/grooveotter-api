@@ -26,14 +26,13 @@ app.use(session({
     store: new KnexStore({knex: bookshelf.knex, tablename: 'user_sessions'}),
     secret: process.env.SECRET,
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
+        // secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
         maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
     },
     saveUninitialized: false,
-    resave: true
+    resave: false
 }));
-
 app.use(passport.initialize());
 app.use(passport.session());
 
