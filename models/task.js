@@ -9,7 +9,9 @@ var Task = module.exports = bookshelf.Model.extend({
 
     defaults: function() {
         return {
-            id: uuid.v4()
+            id: uuid.v4(),
+            duration: 1000 * 60 * 20, // 20 minutes
+            completed: false
         };
     },
 
@@ -18,6 +20,7 @@ var Task = module.exports = bookshelf.Model.extend({
             id: attrs.id,
             title: attrs.title,
             completed: Boolean(attrs.completed),
+            duration: attrs.duration,
             user_id: attrs.user_id,
             created_at: new Date(attrs.created_at),
             updated_at: new Date(attrs.updated_at)

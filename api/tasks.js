@@ -22,6 +22,7 @@ function create(req, res, next) {
     var data = {
         title: req.body.title,
         completed: req.body.completed || false,
+        duration: req.body.duration,
         user_id: req.user.id
     };
 
