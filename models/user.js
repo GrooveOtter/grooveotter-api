@@ -28,6 +28,7 @@ var User = module.exports = bookshelf.Model.extend({
         return {
             id: attrs.id,
             full_name: attrs.full_name,
+            email: attrs.email,
             picture: attrs.picture,
             role: attrs.role,
             provider: attrs.provider,
@@ -36,14 +37,24 @@ var User = module.exports = bookshelf.Model.extend({
             updated_at: new Date(attrs.updated_at)
         };
     }
+}, {
+    TempTwitterProfile: bookshelf.Model.extend()
 });
 
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    if (user instanceof User.TempTwitterProfile) {
+        done(null, user.toJSON());
+    } else {
+        done(null, user.id);
+    }
 });
 
 passport.deserializeUser(function(userId, done) {
-    new User({id: userId}).fetch({require: true}).then(function(user) {
-        done(null, user);
-    }).catch(done);
+    if (typeof userId === 'string') {
+        return new User({id: userId}).fetch({require: true}).then(function(user) {
+            done(null, user);
+        }).catch(done);
+    } else {
+        done(null, new User.TempTwitterProfile(userId));
+    }
 });

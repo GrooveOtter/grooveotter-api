@@ -39,6 +39,8 @@ passport.use(new GoogleStrategy({
     }).catch(User.NotFoundError, function() {
         return new User({
             full_name: profile.displayName,
+            email: profile.emails[0].value,
+            picture: profile.photos[0].value,
             provider: 'google',
             foreign_id: profile.id
         }).save().then(function(user) {
