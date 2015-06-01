@@ -48,7 +48,8 @@ function update(req, res, next) {
 
     var data = {
         title: req.body.title,
-        completd: req.body.completed
+        completed: req.body.completed,
+        duration: req.body.duration
     };
 
     new Task({id: taskId}).where({user_id: userId}).save(data, {patch: true}).then(function(task) {
