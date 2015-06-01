@@ -20,6 +20,7 @@ twitter.get('/', function(req, res, next) {
 twitter.get('/callback', passport.authenticate('google'), function(req, res) {
     if (req.session.callback) {
         res.redirect(req.session.callback);
+        req.session.callback = null;
     } else {
         res.redirect('/');
     }
