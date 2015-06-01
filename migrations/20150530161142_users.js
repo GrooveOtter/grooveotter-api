@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
     return knex.schema.createTable('users', function(table) {
         table.uuid('id').primary();
         table.string('full_name').notNullable();
-        table.binary('picture');
+        table.string('picture');
         table.enum('role', ['admin', 'user']).notNullable().defaultTo('user');
         table.enum('provider', ['twitter', 'google']).notNullable();
         table.string('foreign_id').notNullable();
