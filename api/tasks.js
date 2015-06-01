@@ -46,13 +46,15 @@ function update(req, res, next) {
     var taskId = req.params.taskId;
     var userId = req.user.id;
 
-    var data = {
+    var changes = {
         title: req.body.title,
         completed: req.body.completed,
         duration: req.body.duration
     };
 
-    new Task({id: taskId}).where({user_id: userId}).save(data, {patch: true}).then(function(task) {
+    new Task({id: taskId}).where({user_id: userId}).fetch({require: true}).then(function(task) {
+        return task.save(changes, {patch: true});
+    }).then(function(task) {
         res.json(task);
     }).catch(Task.NotFoundError, function() {
         res.sendStatus(404);
