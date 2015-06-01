@@ -17,4 +17,4 @@ auth.post('/logout', roles.ensureLoggedIn, function(req, res, next) {
 });
 
 auth.use('/twitter', require('./twitter'));
-// auth.use('/google', require('./google'));
+auth.use('/google', require('./google'));

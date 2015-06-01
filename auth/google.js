@@ -3,7 +3,7 @@
 var passport = require('passport');
 var express = require('express');
 var User = require('../models/user');
-var TwitterStrategy = require('passport-twitter').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 var twitter = module.exports = express.Router();
 
@@ -13,9 +13,11 @@ twitter.get('/', function(req, res, next) {
     }
 
     next();
-}, passport.authenticate('twitter'));
+}, passport.authenticate('google', {
+    scope: 'https://www.googleapis.com/auth/plus.profile.emails.read'
+}));
 
-twitter.get('/callback', passport.authenticate('twitter'), function(req, res) {
+twitter.get('/callback', passport.authenticate('google'), function(req, res) {
     if (req.session.callback) {
         res.redirect(req.session.callback);
     } else {
@@ -23,20 +25,20 @@ twitter.get('/callback', passport.authenticate('twitter'), function(req, res) {
     }
 });
 
-passport.use(new TwitterStrategy({
-    consumerKey: process.env.TWITTER_CONSUMER_KEY,
-    consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-    callbackURL: process.env.TWITTER_HOST + '/auth/twitter/callback'
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_HOST + '/auth/google/callback'
 }, function(token, secret, profile, done) {
     User.where({
-        provider: 'twitter',
+        provider: 'google',
         foreign_id: profile.id
     }).fetch({require: true}).then(function(user) {
         done(null, user);
     }).catch(User.NotFoundError, function() {
         return new User({
             full_name: profile.displayName,
-            provider: 'twitter',
+            provider: 'google',
             foreign_id: profile.id
         }).save().then(function(user) {
             done(null, user);
