@@ -37,7 +37,9 @@ twitter.post('/with-email', function(req, res, next) {
             foreign_id: profile.id
         }).save().then(function(user) {
             req.login(user, function(err) {
-                if (err) return next(err);
+                if (err) {
+                    return next(err);
+                }
 
                 if (req.session.callback) {
                     res.redirect(req.session.callback);
