@@ -31,20 +31,13 @@ passport.use(new GoogleStrategy({
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_HOST + '/auth/google/callback'
 }, function(token, secret, profile, done) {
-    User.where({
-        provider: 'google',
-        foreign_id: profile.id
-    }).fetch({require: true}).then(function(user) {
-        done(null, user);
-    }).catch(User.NotFoundError, function() {
-        return new User({
+    User.fetchByGoogleId(profile.id).catch(User.NotFoundError, function() {
+        return User.create({
             full_name: profile.displayName,
             email: profile.emails[0].value,
             picture: profile.photos[0].value,
             provider: 'google',
             foreign_id: profile.id
-        }).save().then(function(user) {
-            done(null, user);
         });
-    }).catch(done);
+    }).nodeify(done);
 }));

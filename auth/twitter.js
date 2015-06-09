@@ -7,6 +7,8 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 
 var twitter = module.exports = express.Router();
 
+// TODO: cleanup this mess
+
 twitter.get('/', function(req, res, next) {
     req.session.callback = req.query.callback;
     req.session.newCallback = req.query.newCallback;
@@ -29,13 +31,13 @@ twitter.post('/with-email', function(req, res, next) {
     if (req.user instanceof User.TempTwitterProfile) {
         var profile = req.user.get('profile');
 
-        new User({
+        User.create({
             full_name: profile.displayName,
             email: req.body.email,
             picture: profile.photos[0].value,
             provider: 'twitter',
             foreign_id: profile.id
-        }).save().then(function(user) {
+        }).then(function(user) {
             req.login(user, function(err) {
                 if (err) {
                     return next(err);
@@ -59,12 +61,7 @@ passport.use(new TwitterStrategy({
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
     callbackURL: process.env.TWITTER_HOST + '/auth/twitter/callback'
 }, function(token, secret, profile, done) {
-    User.where({
-        provider: 'twitter',
-        foreign_id: profile.id
-    }).fetch({require: true}).catch(User.NotFoundError, function() {
-        done(null, new User.TempTwitterProfile({profile: profile}));
-    }).then(function(user) {
-        done(null, user);
-    }).catch(done);
+    User.fetchByTwitterId(profile.id).catch(User.NotFoundError, function() {
+        return new User.TempTwitterProfile({profile: profile});
+    }).nodeify(done);
 }));

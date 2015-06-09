@@ -10,47 +10,45 @@ resource.get('/me', me);
 resource.use(roles.ensureAdmin);
 resource.get('/', index);
 resource.get('/:userId', show);
-resource.get('/:userId/tasks', indexTasks);
+resource.get('/:userId/tasks', listTasks);
 resource.delete('/:userId', destroy);
 
 function me(req, res, next) {
-    res.json(req.user);
+    res.send(req.user);
 }
 
 function index(req, res, next) {
     User.fetchAll().then(function(users) {
-        res.json(users);
+        res.send(users);
     }).catch(next);
 }
 
 function show(req, res, next) {
-    new User({id: req.params.userId}).fetch({require: true}).then(function(user) {
-        res.json(user);
-    }).catch(User.NotFoundError, function() {
-        res.sendStatus(404);
+    var userId = req.params.userId;
+
+    User.fetchById(userId).then(function(user) {
+        res.send(user);
     }).catch(next);
 }
 
-function indexTasks(req, res, next) {
-    new User({id: req.params.userId}).fetch({require: true}).then(function(user) {
+function listTasks(req, res, next) {
+    var userId = req.params.userId;
+
+    User.fetchById(userId).then(function(user) {
         return user.tasks().fetch();
     }).then(function(tasks) {
-        res.json(tasks);
-    }).catch(User.NotFoundError, function() {
-        res.sendStatus(404);
+        res.send(tasks);
     }).catch(next);
 }
 
 function destroy(req, res, next) {
-    new User({id: req.params.userId}).fetch({require: true}).then(function(user) {
-        var jsonUser = user.toJSON();
+    var userId = req.params.userId;
 
-        return user.destroy().then(function() {
-            return jsonUser;
-        });
+    User.fetchById(userId).then(function(user) {
+        var blob = user.toJSON();
+
+        return user.destroy().return(blob);
     }).then(function(user) {
-        res.json(user);
-    }).catch(User.NotFoundError, function() {
-        res.sendStatus(404);
+        res.send(user);
     }).catch(next);
 }

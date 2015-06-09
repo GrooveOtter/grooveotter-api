@@ -14,7 +14,7 @@ resource.delete('/:taskId', destroy);
 
 function index(req, res, next) {
     req.user.tasks().fetch().then(function(tasks) {
-        res.json(tasks);
+        res.send(tasks);
     }).catch(next);
 }
 
@@ -27,7 +27,7 @@ function create(req, res, next) {
     };
 
     new Task(data).save().then(function(task) {
-        res.json(task);
+        res.send(task);
     }).catch(next);
 }
 
@@ -36,9 +36,7 @@ function show(req, res, next) {
     var userId = req.user.id;
 
     new Task({id: taskId}).where({user_id: userId}).fetch().then(function(task) {
-        res.json(task);
-    }).catch(Task.NotFoundError, function() {
-        res.sendStatus(404);
+        res.send(task);
     }).catch(next);
 }
 
@@ -55,9 +53,7 @@ function update(req, res, next) {
     new Task({id: taskId}).where({user_id: userId}).fetch({require: true}).then(function(task) {
         return task.save(changes, {patch: true});
     }).then(function(task) {
-        res.json(task);
-    }).catch(Task.NotFoundError, function() {
-        res.sendStatus(404);
+        res.send(task);
     }).catch(next);
 }
 
@@ -66,8 +62,6 @@ function destroy(req, res, next) {
     var userId = req.user.id;
 
     new Task({id: taskId}).where({user_id: userId}).destroy().then(function(task) {
-        res.json(task);
-    }).catch(Task.NotFoundError, function() {
-        res.sendStatus(404);
+        res.send(task);
     }).catch(next);
 }

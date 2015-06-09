@@ -38,7 +38,30 @@ var User = module.exports = bookshelf.Model.extend({
         };
     }
 }, {
-    TempTwitterProfile: bookshelf.Model.extend()
+    TempTwitterProfile: bookshelf.Model.extend(),
+
+    create: function(attrs, opts) {
+        return new User(attrs, opts).save();
+    },
+
+    fetchById: function(id) {
+        return User.where({id: id}).fetch({require: true});
+    },
+
+    fetchByGoogleId: function(googleId) {
+        return User.where({
+            provider: 'google',
+            foreign_id: googleId
+        }).fetch({require: true});
+    },
+
+    fetchByTwitterId: function(twitterId) {
+        return User.where({
+            provider: 'twitter',
+            foreign_id: twitterId
+        }).fetch({require: true});
+    }
+
 });
 
 passport.serializeUser(function(user, done) {

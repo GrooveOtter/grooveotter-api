@@ -17,11 +17,11 @@ var Task = module.exports = bookshelf.Model.extend({
 
     parse: function(attrs) {
         return {
-            id: attrs.id,
-            title: attrs.title,
+            id: String(attrs.id),
+            title: String(attrs.title),
             completed: Boolean(attrs.completed),
-            duration: attrs.duration,
-            user_id: attrs.user_id,
+            duration: Number(attrs.duration),
+            user_id: String(attrs.user_id),
             created_at: new Date(attrs.created_at),
             updated_at: new Date(attrs.updated_at)
         };
