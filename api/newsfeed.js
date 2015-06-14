@@ -10,7 +10,7 @@ resource.get('/', index);
 function index(req, res, next) {
     Task.query(function(qb) {
         qb.where({shared: true}).orderBy('created_at').limit(200);
-    }).fetchAll().then(function(tasks) {
+    }).fetchAll({withRelated: ['user']}).then(function(tasks) {
         res.send(tasks);
     }).catch(next);
 }

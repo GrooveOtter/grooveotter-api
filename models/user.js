@@ -3,7 +3,6 @@
 var bookshelf = require('../bookshelf');
 var passport = require('passport');
 var uuid = require('uuid');
-var Task = require('./task');
 
 var User = module.exports = bookshelf.Model.extend({
     tableName: 'users',
@@ -81,3 +80,6 @@ passport.deserializeUser(function(userId, done) {
         done(null, new User.TempTwitterProfile(userId));
     }
 });
+
+// because node
+var Task = require('./task');

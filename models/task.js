@@ -26,5 +26,14 @@ var Task = module.exports = bookshelf.Model.extend({
             created_at: new Date(attrs.created_at),
             updated_at: new Date(attrs.updated_at)
         };
+    },
+
+    user: function() {
+        return this.belongsTo(User).query(function(qb) {
+            qb.column('id', 'full_name', 'picture', 'created_at', 'updated_at');
+        });
     }
 });
+
+// because node
+var User = require('./user');
