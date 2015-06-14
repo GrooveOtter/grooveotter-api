@@ -22,6 +22,7 @@ var Task = module.exports = bookshelf.Model.extend({
             completed: Boolean(attrs.completed),
             duration: Number(attrs.duration),
             user_id: String(attrs.user_id),
+            shared: Boolean(attrs.shared),
             created_at: new Date(attrs.created_at),
             updated_at: new Date(attrs.updated_at)
         };

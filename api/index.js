@@ -10,6 +10,7 @@ api.use(roles.ensureLoggedIn);
 
 api.use('/users', require('./users'));
 api.use('/tasks', require('./tasks'));
+api.use('/shared-tasks', require('./shared_tasks'));
 
 api.use(function handleNotFoundError(err, req, res, next) {
     if (err instanceof bookshelf.Model.NotFoundError) {
