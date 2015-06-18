@@ -60,7 +60,9 @@ var Task = module.exports = bookshelf.Model.extend({
 }, {
     newsfeed: function() {
         return Task.query(function(qb) {
-            qb.where({shared: true}).orderBy('created_at').limit(200);
+            // qb.where({shared: true})
+            qb.orderBy('created_at')
+            qb.limit(200);
         });
     }
 });
