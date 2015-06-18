@@ -32,6 +32,10 @@ var Task = module.exports = bookshelf.Model.extend({
         return this.belongsTo(User).query(function(qb) {
             qb.column('id', 'full_name', 'picture', 'created_at', 'updated_at');
         });
+    },
+
+    likers: function() {
+        return this.belongsToMany(User, 'task_likes');
     }
 });
 

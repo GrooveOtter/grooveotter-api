@@ -11,6 +11,17 @@ function index(req, res, next) {
     Task.query(function(qb) {
         qb.where({shared: true}).orderBy('created_at').limit(200);
     }).fetchAll({withRelated: ['user']}).then(function(tasks) {
-        res.send(tasks);
+        return tasks.mapThen(prepareTask);
+    }).then(function(tasks) {
+        res.json(tasks);
     }).catch(next);
+
+    function prepareTask(task) {
+        return task.likers().fetch().then(function(users) {
+            return task.set({
+                liked: users.contains(req.user),
+                likes: users.length
+            });
+        });
+    }
 }
