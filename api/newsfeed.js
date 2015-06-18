@@ -6,22 +6,18 @@ var Task = require('../models/task');
 var resource = module.exports = express.Router();
 
 resource.get('/', index);
+resource.post('/:taskId/like', like);
 
 function index(req, res, next) {
-    Task.query(function(qb) {
-        qb.where({shared: true}).orderBy('created_at').limit(200);
-    }).fetchAll({withRelated: ['user']}).then(function(tasks) {
-        return tasks.mapThen(prepareTask);
-    }).then(function(tasks) {
+    Task.newsfeed().fetchAllWithPublicUserInfo(req.user).then(function(tasks) {
         res.json(tasks);
     }).catch(next);
+}
 
-    function prepareTask(task) {
-        return task.likers().fetch().then(function(users) {
-            return task.set({
-                liked: users.contains(req.user),
-                likes: users.length
-            });
-        });
-    }
+function like(req, res, next) {
+    var taskId = req.params.taskId;
+
+    req.user.like(new Task({id: taskId})).then(function() {
+        res.sendStatus(204);
+    }).catch(next);
 }

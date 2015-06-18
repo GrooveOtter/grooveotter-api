@@ -35,6 +35,14 @@ var User = module.exports = bookshelf.Model.extend({
             created_at: new Date(attrs.created_at),
             updated_at: new Date(attrs.updated_at)
         };
+    },
+
+    like: function(task) {
+        return this.liked().create(task);
+    },
+
+    liked: function() {
+        return this.belongsToMany(Task, 'task_likes');
     }
 }, {
     TempTwitterProfile: bookshelf.Model.extend(),

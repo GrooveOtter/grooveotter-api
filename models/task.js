@@ -29,13 +29,39 @@ var Task = module.exports = bookshelf.Model.extend({
     },
 
     user: function() {
-        return this.belongsTo(User).query(function(qb) {
-            qb.column('id', 'full_name', 'picture', 'created_at', 'updated_at');
-        });
+        return this.belongsTo(User);
     },
 
     likers: function() {
         return this.belongsToMany(User, 'task_likes');
+    },
+
+    prepareLikeInfo: function(currentUser) {
+        return this.likers().fetch().bind(this).then(function(users) {
+
+            return this.set({
+                liked: !!users.get(currentUser.id), // .contains is broken
+                likes: users.length
+            });
+        });
+    },
+
+    fetchAllWithPublicUserInfo: function(user) {
+        var publicUserInfo = {
+            user: function(qb) {
+                qb.column('id', 'full_name', 'picture', 'created_at', 'updated_at');
+            }
+        };
+
+        return this.fetchAll({withRelated: [publicUserInfo]}).then(function(tasks) {
+            return tasks.invokeThen('prepareLikeInfo', user);
+        });
+    }
+}, {
+    newsfeed: function() {
+        return Task.query(function(qb) {
+            qb.where({shared: true}).orderBy('created_at').limit(200);
+        });
     }
 });
 
