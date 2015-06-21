@@ -6,6 +6,7 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
+var channel = require('./channel');
 var cors = require('cors');
 var auth = require('./auth');
 var api = require('./api');
@@ -39,6 +40,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/sse', connectChannel);
 app.use('/auth', auth);
 app.use('/api', api);
 
@@ -63,3 +65,7 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(function(req, res) {
     res.sendStatus(404);
 });
+
+function connectChannel(req, res) {
+    channel.addClient(req, res);
+}
