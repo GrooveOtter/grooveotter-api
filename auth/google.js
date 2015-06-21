@@ -32,10 +32,16 @@ passport.use(new GoogleStrategy({
     callbackURL: process.env.GOOGLE_HOST + '/auth/google/callback'
 }, function(token, secret, profile, done) {
     User.fetchByGoogleId(profile.id).catch(User.NotFoundError, function() {
+        var photoURL = profile.photos[0].value;
+
+        if (/XdUIqdMkCWA\/AAAAAAAAAAI\/AAAAAAAAAAA\/4252rscbv5M/.test(photoURL)) {
+            photoURL = undefined;
+        }
+
         return User.create({
             full_name: profile.displayName,
             email: profile.emails[0].value,
-            picture: profile.photos[0].value,
+            picture: photoURL,
             provider: 'google',
             foreign_id: profile.id
         });
