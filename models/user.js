@@ -38,7 +38,13 @@ var User = module.exports = bookshelf.Model.extend({
     },
 
     like: function(task) {
-        return this.liked().create(task);
+        return this.liked().create(task).catch(function(err) {
+            if (/constraint failed/i.test(err.message)) {
+                return task;
+            } else {
+                throw err;
+            }
+        });
     },
 
     liked: function() {
@@ -67,8 +73,13 @@ var User = module.exports = bookshelf.Model.extend({
             provider: 'twitter',
             foreign_id: twitterId
         }).fetch({require: true});
-    }
+    },
 
+    publicInfo: {
+        user: function(qb) {
+            qb.column('id', 'full_name', 'picture', 'created_at', 'updated_at');
+        }
+    }
 });
 
 passport.serializeUser(function(user, done) {
