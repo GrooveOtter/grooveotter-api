@@ -2,6 +2,7 @@
 
 var bookshelf = require('../bookshelf');
 var passport = require('passport');
+var channel = require('../channel');
 var uuid = require('uuid');
 
 var User = module.exports = bookshelf.Model.extend({
@@ -38,7 +39,16 @@ var User = module.exports = bookshelf.Model.extend({
     },
 
     like: function(task) {
-        return this.liked().create(task).catch(function(err) {
+        return this.liked().create(task).tap(function() {
+            channel.send({
+                data: {
+                    type: 'NOTIFY_LIKED_ITEM',
+                    payload: {
+                        itemId: task.id
+                    }
+                }
+            });
+        }).catch(function(err) {
             if (/constraint failed/i.test(err.message)) {
                 return task;
             } else {
