@@ -55,7 +55,7 @@ var Task = module.exports = bookshelf.Model.extend({
         return Task.query(function(qb) {
             // qb.where({shared: true})
             qb.where({completed: true})
-            qb.orderBy('created_at')
+            qb.orderBy('created_at', 'desc')
             qb.limit(200);
         });
     }
