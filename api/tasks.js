@@ -23,6 +23,7 @@ function create(req, res, next) {
         title: req.body.title,
         completed: req.body.completed || false,
         duration: req.body.duration,
+        shared: req.body.shared,
         user_id: req.user.id
     };
 
@@ -47,7 +48,8 @@ function update(req, res, next) {
     var changes = {
         title: req.body.title,
         completed: req.body.completed,
-        duration: req.body.duration
+        duration: req.body.duration,
+        shared: req.body.shared
     };
 
     new Task({id: taskId}).where({user_id: userId}).fetch({require: true}).then(function(task) {
