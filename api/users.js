@@ -7,6 +7,7 @@ var User = require('../models/user');
 var resource = module.exports = express.Router();
 
 resource.get('/me', me);
+resource.get('/:userId', show);
 resource.use(roles.ensureAdmin);
 resource.get('/', index);
 resource.get('/:userId', show);
@@ -17,17 +18,23 @@ function me(req, res, next) {
     res.send(req.user);
 }
 
-function index(req, res, next) {
-    User.fetchAll().then(function(users) {
-        res.send(users);
-    }).catch(next);
-}
-
 function show(req, res, next) {
     var userId = req.params.userId;
 
-    User.fetchById(userId).then(function(user) {
+    var q = User.queryById(userId);
+
+    if (!req.user.isAdmin()) {
+        q = q.query(User.publicInfo.user);
+    }
+
+    q.fetch({require: true}).then(function(user) {
         res.send(user);
+    }).catch(next);
+}
+
+function index(req, res, next) {
+    User.fetchAll().then(function(users) {
+        res.send(users);
     }).catch(next);
 }
 

@@ -39,12 +39,13 @@ var User = module.exports = bookshelf.Model.extend({
     },
 
     like: function(task) {
-        return this.liked().create(task).tap(function() {
+        return this.liked().create(task).bind(this).tap(function() {
             channel.send({
                 data: {
                     type: 'NOTIFY_LIKED_ITEM',
                     payload: {
-                        itemId: task.id
+                        itemId: task.id,
+                        userId: this.id
                     }
                 }
             });
@@ -72,7 +73,11 @@ var User = module.exports = bookshelf.Model.extend({
     },
 
     fetchById: function(id) {
-        return User.where({id: id}).fetch({require: true});
+        return User.queryById(id).fetch({require: true});
+    },
+
+    queryById: function(id) {
+        return User.where({id: id});
     },
 
     fetchByGoogleId: function(googleId) {
