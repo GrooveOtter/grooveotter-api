@@ -64,7 +64,11 @@ var User = module.exports = bookshelf.Model.extend({
     TempTwitterProfile: bookshelf.Model.extend(),
 
     create: function(attrs, opts) {
-        return new User(attrs, opts).save();
+        return new User(attrs, opts).save().tap(function(user) {
+            return user.tasks().create({
+                title: 'Writing the next great American novel'
+            });
+        });
     },
 
     fetchById: function(id) {
