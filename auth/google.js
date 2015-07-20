@@ -4,6 +4,7 @@ var passport = require('passport');
 var express = require('express');
 var User = require('../models/user');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var pic = require('../pic');
 
 var twitter = module.exports = express.Router();
 
@@ -35,7 +36,7 @@ passport.use(new GoogleStrategy({
         var photoURL = profile.photos[0].value;
 
         if (/XdUIqdMkCWA\/AAAAAAAAAAI\/AAAAAAAAAAA\/4252rscbv5M/.test(photoURL)) {
-            photoURL = undefined;
+            photoURL = pic;
         }
 
         return User.create({
