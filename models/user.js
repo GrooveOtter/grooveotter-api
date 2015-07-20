@@ -31,6 +31,7 @@ var User = module.exports = bookshelf.Model.extend({
             email: attrs.email,
             picture: attrs.picture,
             role: attrs.role,
+            introduced: attrs.introduced,
             provider: attrs.provider,
             foreign_id: attrs.foreign_id,
             created_at: new Date(attrs.created_at),
