@@ -7,6 +7,8 @@ var User = require('../models/user');
 var resource = module.exports = express.Router();
 
 resource.get('/me', me);
+resource.put('/me', updateMe);
+resource.patch('/me', updateMe);
 resource.get('/:userId', show);
 resource.use(roles.ensureAdmin);
 resource.get('/', index);
@@ -16,6 +18,16 @@ resource.delete('/:userId', destroy);
 
 function me(req, res, next) {
     res.send(req.user);
+}
+
+function updateMe(req, res, next) {
+    var changes = {
+        introduced: req.body.introduced
+    };
+
+    req.user.save(changes, {patch: true}).then(function(user) {
+        res.send(user);
+    }).catch(next);
 }
 
 function show(req, res, next) {
