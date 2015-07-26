@@ -19,7 +19,7 @@
     "passport-google-oauth": "^0.2.0",
     "passport-twitter": "^1.0.3",
     "pg": "^4.3.0",
-    "sse-channel": "^1.0.5",
+    "sse-channel": "^2.0.0",
     "uuid": "^2.0.1"
   },
   "devDependencies": {
