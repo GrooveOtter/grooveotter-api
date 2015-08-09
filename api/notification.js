@@ -9,6 +9,7 @@ resource.post('/', create);
 
 
 function create(req,res, next){
+    console.log('create route')
     var data = {
         notification:req.body.notification,
         user_id: req.body.user_id
