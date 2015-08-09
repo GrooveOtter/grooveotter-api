@@ -16,6 +16,7 @@ function create(req,res, next){
         user_id: req.body.user_id
     }
     new Notification (data).save().then(function(data) {
+        console.log('Notification is setup')
         res.send(data);
     }).catch(next);
 
