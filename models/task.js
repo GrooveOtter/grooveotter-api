@@ -53,9 +53,9 @@ var Task = module.exports = bookshelf.Model.extend({
 }, {
     newsfeed: function() {
         return Task.query(function(qb) {
-            qb.where({shared: true})
-            qb.where({completed: true})
-            qb.orderBy('created_at', 'desc')
+            qb.where({shared: true});
+            qb.where({completed: true});
+            qb.orderBy('created_at', 'desc');
             qb.limit(200);
         });
     }
