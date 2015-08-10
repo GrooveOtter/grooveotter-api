@@ -4,6 +4,13 @@ var bookshelf = require('../bookshelf');
 var uuid = require('uuid');
 
 var Notification = module.exports = bookshelf.Model.extend({
-    tableName: 'tasks',
-    hasTimestamps: true
+    tableName: 'notifications',
+    hasTimestamps: true,
+    defaults: function() {
+        return {
+            id: uuid.v4(),
+            notification: '',
+            completed: false
+        };
+    }
 });
