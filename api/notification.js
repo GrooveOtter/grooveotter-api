@@ -13,7 +13,7 @@ function create (req, res, next) {
         text: req.body.text,
         created_at: req.body.created_at,
         updated_at: req.body.updated_at
-    }
+    };
     new Notification(data).save().then(function(data){
         res.json(data);
     }).catch(next);
