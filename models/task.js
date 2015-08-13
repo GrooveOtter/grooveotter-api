@@ -52,14 +52,22 @@ var Task = module.exports = bookshelf.Model.extend({
     }
 }, {
     newsfeed: function() {
-        return Task.query(function(qb) {
+        var tasks = Task.query(function(qb) {
             qb.where({shared: true});
             qb.where({completed: true});
             qb.orderBy('created_at', 'desc');
             qb.limit(200);
         });
+        var notification = Notification.query(function(qb){
+            qb.limit(100)
+        });
+
+        // Unclear if this is working
+        return tasks + notification;
+
     }
 });
 
 // because node
+var Notification = require('./notification')
 var User = require('./user');

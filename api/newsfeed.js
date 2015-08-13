@@ -3,6 +3,7 @@
 var express = require('express');
 var Task = require('../models/task');
 var User = require('../models/user');
+var Newsfeed = require('../models/notification');
 
 var resource = module.exports = express.Router();
 

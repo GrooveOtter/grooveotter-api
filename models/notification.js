@@ -6,10 +6,10 @@ var uuid = require('uuid');
 var Notification = module.exports = bookshelf.Model.extend({
     tableName: 'notifications',
     hasTimestamps: true,
-
-    defaults: function() {
-        return {
-            id: uuid.v4()
-        };
+    allItems: function() {
+      return Notification.query(function(qb){
+        qb.limit(200);
+      });
     }
+
 });

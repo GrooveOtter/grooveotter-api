@@ -100,6 +100,7 @@ var User = module.exports = bookshelf.Model.extend({
             qb.column('id', 'full_name', 'picture', 'created_at', 'updated_at');
         }
     }
+
 });
 
 passport.serializeUser(function(user, done) {
