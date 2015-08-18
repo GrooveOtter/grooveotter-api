@@ -58,12 +58,12 @@ var Task = module.exports = bookshelf.Model.extend({
             qb.orderBy('created_at', 'desc');
             qb.limit(200);
         });
-        var notification = Notification.query(function(qb){
-            qb.limit(100)
-        });
+        // var notification = Notification.query(function(qb){
+        //     qb.limit(100)
+        // });
 
         // Unclear if this is working
-        return tasks + notification;
+        return tasks;
 
     }
 });
