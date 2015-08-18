@@ -6,5 +6,7 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-    return knex.schema.dropColumn('notification');
+    return knex.schema.table('notifications', function(){
+      table.dropColumn('type');
+    })
 };

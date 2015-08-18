@@ -52,15 +52,22 @@ var Task = module.exports = bookshelf.Model.extend({
     }
 }, {
     newsfeed: function() {
-        var tasks = Task.query(function(qb) {
+        var notification;
+        return Task.query(function(qb) {
             qb.where({shared: true});
             qb.where({completed: true});
             qb.orderBy('created_at', 'desc');
             qb.limit(200);
+        }).fetchAll().then(function(tasks){
+            return Notification.query(function(qb){
+                qb.limit(100)
+            }).fetchAll().then(function(notification){
+                console.log(notification);
+                // return tasks.concat(notification);
+            });
         });
-        // var notification = Notification.query(function(qb){
-        //     qb.limit(100)
-        // });
+
+
 
         // Unclear if this is working
         return tasks;
