@@ -5,7 +5,7 @@ var uuid = require('uuid');
 var Task = require('./task');
 var User = require('./user');
 var knex = bookshelf.knex;
-var Promise = require('knex/node_modules/bluebird');
+var Promise = require('bluebird');
 
 var Notification = module.exports = bookshelf.Model.extend({
     tableName: 'notifications',

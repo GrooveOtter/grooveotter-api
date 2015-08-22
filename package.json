@@ -6,6 +6,7 @@
     "test": "jshint . && NODE_ENV=test mocha"
   },
   "dependencies": {
+    "bluebird": "^2.9.34",
     "body-parser": "^1.12.4",
     "bookshelf": "^0.8.1",
     "connect-session-knex": "^1.0.12",
