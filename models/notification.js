@@ -34,8 +34,8 @@ var Notification = module.exports = bookshelf.Model.extend({
   },{
     allItems: function(currentUser) {
       return Notification.query(function(qb){
-        qb.innerJoin('tasks', function() {
-          this.on('tasks.id', '=', 'notifications.task_id').orOn(knex.raw('notifications.task_id IS NULL'));
+        qb.leftJoin('tasks', function() {
+          this.on('tasks.id', '=', 'notifications.task_id');
         });
         qb.orWhereNull('notifications.task_id');
         qb.orWhere(function(){
