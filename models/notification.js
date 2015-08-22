@@ -10,6 +10,10 @@ var Promise = require('knex/node_modules/bluebird');
 var Notification = module.exports = bookshelf.Model.extend({
     tableName: 'notifications',
     hasTimestamps: true,
+
+    defaults: function() {
+      return {id: uuid.v4()};
+    },
     task: function() {
       return this.belongsTo(Task)
     },
