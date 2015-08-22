@@ -2,7 +2,7 @@
 
 var express = require('express');
 var Task = require('../models/task');
-
+var Notification = require('../models/notification');
 var resource = module.exports = express.Router();
 
 resource.get('/', index);
@@ -28,8 +28,11 @@ function create(req, res, next) {
     };
 
     new Task(data).save().then(function(task) {
-        res.send(task);
+        return new Notification({task_id: task.id, text: '', user_id: req.user.id, type: 'task'}).save().then(function() {
+            res.send(task);
+        });
     }).catch(next);
+
 }
 
 function show(req, res, next) {

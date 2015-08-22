@@ -3,8 +3,7 @@
 var express = require('express');
 var Task = require('../models/task');
 var User = require('../models/user');
-var Newsfeed = require('../models/notification');
-
+var Notification = require('../models/notification')
 var resource = module.exports = express.Router();
 
 resource.get('/', index);
@@ -13,8 +12,12 @@ resource.put('/:taskId', update);
 resource.patch('/:taskId', update);
 
 function index(req, res, next) {
-    Task.newsfeed().fetchAllWithPublicUserInfo(req.user).then(function(tasks) {
-        res.json(tasks);
+    // Task.newsfeed().fetchAllWithPublicUserInfo(req.user).then(function(tasks) {
+    //     res.json(tasks);
+    // }).catch(next);
+    var user = req.user;
+    Notification.allItems(user).then(function(notifications){
+        res.json(notifications);
     }).catch(next);
 }
 
