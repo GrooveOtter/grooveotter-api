@@ -26,6 +26,12 @@ var Notification = module.exports = bookshelf.Model.extend({
       } else {
         return Promise.resolve(this);
       }
+    },
+
+    defaults: function() {
+        return {
+            id: uuid.v4()
+        }
     }
   },{
     allItems: function(currentUser) {
