@@ -40,7 +40,7 @@ function show(req, res, next) {
 function update(req, res, next) {
     var taskId = req.params.taskId;
 
-    Task.newsfeed()
+    Task.feed()
         .where({id: taskId})
         .fetch({withRelated: [User.publicInfo]})
         .then(like)
