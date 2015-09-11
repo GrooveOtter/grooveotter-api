@@ -40,7 +40,7 @@ var User = module.exports = bookshelf.Model.extend({
     },
 
     like: function(task) {
-        return this.liked().create(task).bind(this).tap(function() {
+        return this.liked().attach(task).then(function() {
             channel.send({
                 data: {
                     type: 'NOTIFY_LIKED_ITEM',
@@ -50,7 +50,8 @@ var User = module.exports = bookshelf.Model.extend({
                     }
                 }
             });
-        }).catch(function(err) {
+            return task
+        }.bind(this)).catch(function(err) {
             if (/constraint failed/i.test(err.message)) {
                 return task;
             } else {

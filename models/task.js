@@ -72,6 +72,20 @@ var Task = module.exports = bookshelf.Model.extend({
         // Unclear if this is working
         return tasks;
 
+    },
+    feed: function() {
+        var tasks = Task.query(function(qb) {
+            qb.where({shared: true});
+            qb.where({completed: true});
+            qb.orderBy('created_at', 'desc');
+            qb.limit(200);
+        });
+        // var notification = Notification.query(function(qb){
+        //     qb.limit(100)
+        // });
+
+        // Unclear if this is working
+        return tasks;
     }
 });
 
