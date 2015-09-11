@@ -28,7 +28,8 @@ function create (req, res, next) {
         user_id: req.body.user_id,
         text: req.body.text,
         created_at: req.body.created_at,
-        updated_at: req.body.updated_at
+        updated_at: req.body.updated_at,
+        task_id: req.body.task_id
     };
     new Notification(data).save().then(function(data){
         res.json(data);
