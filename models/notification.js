@@ -37,7 +37,9 @@ var Notification = module.exports = bookshelf.Model.extend({
         qb.leftJoin('tasks', function() {
           this.on('tasks.id', '=', 'notifications.task_id');
         });
-        qb.orWhereNull('notifications.task_id');
+        qb.orWhere(function() {
+            this.where({'notifications.type': 'notification'})
+        });
         qb.orWhere(function(){
             this.where({'tasks.shared': true, 'tasks.completed': true});
         });
