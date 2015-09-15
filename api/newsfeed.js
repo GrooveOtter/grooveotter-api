@@ -40,8 +40,10 @@ function show(req, res, next) {
 function update(req, res, next) {
     var taskId = req.params.taskId;
 
-    Task.feed()
-        .where({id: taskId})
+    Task.query(function(qb) {
+            qb.where({completed: true});
+            qb.where({id: taskId})
+        })
         .fetch({withRelated: [User.publicInfo]})
         .then(like)
         .then(prepareLikeInfo)
