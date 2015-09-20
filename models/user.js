@@ -39,21 +39,22 @@ var User = module.exports = bookshelf.Model.extend({
         };
     },
 
-    like: function(task) {
-        return this.liked().attach(task).then(function() {
+    like: function(notification) {
+        return this.liked().attach(notification).then(function() {
+            console.log(notification.id);
             channel.send({
                 data: {
                     type: 'NOTIFY_LIKED_ITEM',
                     payload: {
-                        itemId: task.id,
+                        itemId: notification.id,
                         userId: this.id
                     }
                 }
             });
-            return task
+            return notification
         }.bind(this)).catch(function(err) {
             if (/constraint failed/i.test(err.message)) {
-                return task;
+                return notification;
             } else {
                 throw err;
             }
@@ -61,7 +62,7 @@ var User = module.exports = bookshelf.Model.extend({
     },
 
     liked: function() {
-        return this.belongsToMany(Task, 'task_likes');
+        return this.belongsToMany(Notification, 'notification_likes');
     }
 }, {
     TempTwitterProfile: bookshelf.Model.extend(),
@@ -124,3 +125,4 @@ passport.deserializeUser(function(userId, done) {
 
 // because node
 var Task = require('./task');
+var Notification = require('./notification');

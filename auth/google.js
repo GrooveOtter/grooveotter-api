@@ -39,6 +39,7 @@ passport.use(new GoogleStrategy({
             photoURL = pic;
         }
 
+        console.log(profile);
         return User.create({
             full_name: profile.displayName,
             email: profile.emails[0].value,

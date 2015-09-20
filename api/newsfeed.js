@@ -7,9 +7,9 @@ var Notification = require('../models/notification')
 var resource = module.exports = express.Router();
 
 resource.get('/', index);
-resource.get('/:taskId', show);
-resource.put('/:taskId', update);
-resource.patch('/:taskId', update);
+resource.get('/:notificationId', show);
+resource.put('/:notificationId', update);
+resource.patch('/:notificationId', update);
 
 function index(req, res, next) {
     // Task.newsfeed().fetchAllWithPublicUserInfo(req.user).then(function(tasks) {
@@ -22,52 +22,50 @@ function index(req, res, next) {
 }
 
 function show(req, res, next) {
-    var taskId = req.params.taskId;
+    var notificationId = req.params.notificationId;
 
     Task.newsfeed()
-        .where({id: taskId})
+        .where({id: notificationId})
         .fetchOne({withRelated: [User.publicInfo]})
         .then(prepareLikeInfo)
-        .then(function(task) {
-            res.send(task);
+        .then(function(notification) {
+            res.send(notification);
         }).catch(next);
 
-    function prepareLikeInfo(task) {
-        return task.prepareLikeInfo(req.user);
+    function prepareLikeInfo(notification) {
+        return notification.prepareLikeInfo(req.user);
     }
 }
 
 function update(req, res, next) {
-    var taskId = req.params.taskId;
+    var notificationId = req.params.notificationId;
 
-    Task.query(function(qb) {
-            qb.where({completed: true});
-            qb.where({id: taskId})
-        })
+    new Notification({id: notificationId})
         .fetch({withRelated: [User.publicInfo]})
         .then(like)
         .then(prepareLikeInfo)
-        .then(function(task) {
-            res.send(task);
+        .then(function(notification) {
+            res.send(notification);
         }).catch(next);
 
-    function like(task) {
+    function like(notification) {
+        console.log('before like', notification.id);
         if (req.body.liked) {
-            return req.user.like(task);
+            return req.user.like(notification);
         } else {
-            return task;
+            return notification;
         }
     }
 
-    function prepareLikeInfo(task) {
-        return task.prepareLikeInfo(req.user);
+    function prepareLikeInfo(notification) {
+        return notification.prepareLikeInfo(req.user);
     }
 }
 
 function like(req, res, next) {
-    var taskId = req.params.taskId;
+    var notificationId = req.params.notificationId;
 
-    req.user.like(new Task({id: taskId})).then(function() {
+    req.user.like(new Notification({id: notificationId})).then(function() {
         res.sendStatus(204);
     }).catch(next);
 }

@@ -71,3 +71,5 @@ function destroy(req, res, next) {
         res.send(user);
     }).catch(next);
 }
+
+var Notification = require('../models/notification');

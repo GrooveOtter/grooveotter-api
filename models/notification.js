@@ -3,7 +3,6 @@
 var bookshelf = require('../bookshelf');
 var uuid = require('uuid');
 var Task = require('./task');
-var User = require('./user');
 var knex = bookshelf.knex;
 var Promise = require('bluebird');
 
@@ -22,20 +21,22 @@ var Notification = module.exports = bookshelf.Model.extend({
       return this.belongsTo(User)
     },
 
-    prepareLikeInfo: function(currentUser) {
-      var task = this.related('task');
+    likers: function() {
+        return this.belongsToMany(User, 'notification_likes');
+    },
 
-      if (task != null) {
-        return task.prepareLikeInfo(currentUser).return(this);
-      } else {
-        return Promise.resolve(this);
-      }
+    prepareLikeInfo: function(currentUser) {
+        return this.likers().fetch().bind(this).then(function(users) {
+            return this.set({
+                liked: !!users.get(currentUser.id), // .contains is broken
+                likes: users.length
+            });
+        });
     }
-  },{
-    allItems: function(currentUser) {
-      return Notification.query(function(qb){
+  }, {
+    whereViewable: function(qb) {
         qb.leftJoin('tasks', function() {
-          this.on('tasks.id', '=', 'notifications.task_id');
+            this.on('tasks.id', '=', 'notifications.task_id');
         });
         qb.orWhere(function() {
             this.where({'notifications.type': 'notification'})
@@ -43,6 +44,16 @@ var Notification = module.exports = bookshelf.Model.extend({
         qb.orWhere(function(){
             this.where({'tasks.shared': true, 'tasks.completed': true});
         });
+    },
+
+    allItems: function(currentUser) {
+      return Notification.query(function(qb){
+        qb.join('users', function() {
+            this.on('users.id', '=', 'notifications.user_id');
+        });
+
+        Notification.whereViewable(qb);
+        qb.whereNot({'users.full_name': ''});
 
         qb.orderBy('created_at', 'desc')
         qb.limit(200);
@@ -52,3 +63,4 @@ var Notification = module.exports = bookshelf.Model.extend({
     }
 });
 
+var User = require('./user');

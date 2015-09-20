@@ -24,8 +24,12 @@ function show(req, res, next) {
 }
 
 function create (req, res, next) {
+    if (req.user.get('full_name') === '') {
+        return res.sendStatus(400);
+    }
+
     var data = {
-        user_id: req.body.user_id,
+        user_id: req.user.id,
         text: req.body.text,
         created_at: req.body.created_at,
         updated_at: req.body.updated_at,
