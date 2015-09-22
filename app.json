@@ -25,6 +25,9 @@
     },
     "TWITTER_HOST": {
       "required": true
+    },
+    "PGSSLMODE": {
+      "required": true
     }
   },
   "addons": []
