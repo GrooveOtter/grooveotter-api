@@ -14,7 +14,7 @@ api.use('/newsfeed', require('./newsfeed'));
 api.use('/notifications', require ('./notification'));
 
 api.get('/hello', function(req, res, next) {
-    res.send('hi');
+    res.send('hi there');
 });
 
 api.use(function handleNotFoundError(err, req, res, next) {
