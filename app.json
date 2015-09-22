@@ -1,0 +1,31 @@
+{
+  "name": "grooveotter-api",
+  "scripts": {},
+  "env": {
+    "DATABASE_URL": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_ID": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_SECRET": {
+      "required": true
+    },
+    "GOOGLE_HOST": {
+      "required": true
+    },
+    "SECRET": {
+      "required": true
+    },
+    "TWITTER_CONSUMER_KEY": {
+      "required": true
+    },
+    "TWITTER_CONSUMER_SECRET": {
+      "required": true
+    },
+    "TWITTER_HOST": {
+      "required": true
+    }
+  },
+  "addons": []
+}
